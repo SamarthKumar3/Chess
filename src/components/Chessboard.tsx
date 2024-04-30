@@ -106,7 +106,6 @@ const Chessboard = () => {
         }
     }
 
-
     return (
         <>
             <div className='chessboard' onMouseDown={(e) => grabPiece(e)} onMouseMove={(e) => movePiece(e)} onMouseUp={(e) => dropPiece(e)} ref={chessBoardRef}>
