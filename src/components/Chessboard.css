@@ -1,0 +1,16 @@
+.chessboard{
+    background-color: #779556;
+    width: 640px;
+    height: 640px;
+    display: grid;
+}
+
+.chessboard-row{
+    display: flex;
+}
+
+
+
+
+
+

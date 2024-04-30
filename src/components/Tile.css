@@ -1,0 +1,19 @@
+.chessboard-tile {
+    height: 80px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dark {
+    background-color: #eeeed2;
+}
+
+.chess-piece {
+    height: 80px;
+    width: 80px;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
