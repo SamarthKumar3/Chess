@@ -4,10 +4,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-}
+    pointer-events: none;
+    }
 
 .dark {
     background-color: #eeeed2;
+    
 }
 
 .chess-piece {
@@ -15,5 +17,6 @@
     width: 80px;
     background-position: center;
     background-repeat: no-repeat;
-    cursor: pointer;
+    cursor: grab;
+    pointer-events: auto;
 }
