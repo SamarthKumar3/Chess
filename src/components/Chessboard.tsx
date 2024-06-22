@@ -135,9 +135,15 @@ const Chessboard = () => {
             setPieces(value => {
                 const pieces = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
-                        refree.isValidMove(gridX, gridY, x, y, p.type, p.team);
-                        p.x = x;
-                        p.y = y;
+                        const validMove = refree.isValidMove(gridX, gridY, x, y, p.type, p.team);
+                        if (validMove) {
+                            p.x = x;
+                            p.y = y;
+                        }else{
+                            activeElement.style.position = 'relative';
+                            activeElement.style.removeProperty('left');
+                            activeElement.style.removeProperty('top');
+                        }
                     }
                     return p;
                 })
