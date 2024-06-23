@@ -6,16 +6,21 @@ export default class Refree {
         y: number,
         boardState: Piece[]
     ): boolean {
-        console.log("Checking if the tile is occupied");
         const piece = boardState.find(p => p.x == x && p.y == y);
         if (piece) {
-            console.log("Tile is occupied");
             return true;
         } else {
-            console.log("Tile is not occupied");
             return false;
         }
+    }
 
+    tileIsOccupiedByOpponent(x: number, y: number, team: TeamType, boardState: Piece[]): boolean {
+        const piece = boardState.find(p => p.x == x && p.y == y && p.team != team);
+        if (piece && piece.team != team) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     isValidMove(
@@ -27,44 +32,27 @@ export default class Refree {
         team: TeamType,
         boardState: Piece[]
     ): boolean {
-        //check if the piece is ours or not
         if (type == PieceType.PAWN) {
-            if (team == TeamType.PLAYER) {
-                //first move
-                if (py == 6) {
-                    if (px == x && py - y == 1) {
-                        //move the Pawn only if tile is not occupied & is a straight move
-                        if (!this.tileIsOccupied(x, y, boardState)) {
-                            return true;
-                        }
-                    } else if (px == x && py - y == 2) {
-                        if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y + 1, boardState)) {
-                            return true;
-                        }
-                    }
+            const splRow = (team == TeamType.PLAYER) ? 6 : 1;
+            const pawnDir = (team == TeamType.PLAYER) ? -1 : 1;
+            //movement logic
+            if (px === x && py === splRow && y - py === 2 * pawnDir) {
+                if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y - pawnDir, boardState)) {
+                    return true;
                 }
-                //consecutive moves
-                else if (px == x && py - y == 1) {
-                    if (!this.tileIsOccupied(x, y, boardState)) {
-                        return true;
-                    }
+            } else if (px === x && y - py === pawnDir) {
+                if (!this.tileIsOccupied(x, y, boardState)) {
+                    return true;
                 }
             }
-            else {
-                if (py == 1) {
-                    if (px == x && y - py == 1 ) {
-                        if (!this.tileIsOccupied(x, y, boardState)) {
-                            return true;
-                        }
-                    } else if (px == x && y - py == 2) {
-                        if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y - 1, boardState)) {
-                            return true;
-                        }
-                    }
-                } else if (px == x && y - py == 1) {
-                    if (!this.tileIsOccupied(x, y, boardState)) {
-                        return true;
-                    }
+            //capture logic
+            else if (x - px === -1 && y - py === pawnDir) {
+                if (this.tileIsOccupiedByOpponent(x, y, team, boardState)) {
+                    return true;
+                }
+            } else if (x - px === 1 && y - py === pawnDir) {
+                if (this.tileIsOccupiedByOpponent(x, y, team, boardState)) {
+                    return true;
                 }
             }
         }
