@@ -9,7 +9,7 @@ const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
 const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 const reverseVerticalAxis = verticalAxis.reverse();
 
-interface Piece {
+export interface Piece {
     image: string;
     x: number;
     y: number;
@@ -135,15 +135,17 @@ const Chessboard = () => {
             setPieces(value => {
                 const pieces = value.map((p) => {
                     if (p.x === gridX && p.y === gridY) {
-                        const validMove = refree.isValidMove(gridX, gridY, x, y, p.type, p.team);
+                        const validMove = refree.isValidMove(gridX, gridY, x, y, p.type, p.team, value);
+
                         if (validMove) {
                             p.x = x;
                             p.y = y;
-                        }else{
+                        } else {
                             activeElement.style.position = 'relative';
                             activeElement.style.removeProperty('left');
                             activeElement.style.removeProperty('top');
                         }
+                        
                     }
                     return p;
                 })
