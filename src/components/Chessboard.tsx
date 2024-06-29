@@ -132,25 +132,33 @@ const Chessboard = () => {
             const x = Math.floor((e.clientX - chessBoard.offsetLeft) / 80);
             const y = Math.floor((e.clientY - chessBoard.offsetTop) / 80);
 
-            setPieces(value => {
-                const pieces = value.map((p) => {
-                    if (p.x === gridX && p.y === gridY) {
-                        const validMove = refree.isValidMove(gridX, gridY, x, y, p.type, p.team, value);
+            const currPiece = pieces.find(p => p.x === gridX && p.y === gridY);
 
-                        if (validMove) {
-                            p.x = x;
-                            p.y = y;
-                        } else {
-                            activeElement.style.position = 'relative';
-                            activeElement.style.removeProperty('left');
-                            activeElement.style.removeProperty('top');
+            if (currPiece) {
+                const validMove = refree.isValidMove(gridX, gridY, x, y, currPiece.type, currPiece.team, pieces);
+                if (validMove) {
+                    const updatedPieces = pieces.reduce((result, piece) => {
+                        if (piece.x === currPiece.x && piece.y === currPiece.y) {
+                            piece.x = x;
+                            piece.y = y;
+                            result.push(piece);
                         }
-                        
-                    }
-                    return p;
-                })
-                return pieces;
-            })
+                        else if (!(piece.x == x && piece.y == y)) {
+                            result.push(piece);
+                        }
+                        return result;
+                    }, [] as Piece[]);
+
+                    setPieces(updatedPieces);
+
+                    
+                }
+                else {
+                    activeElement.style.position = 'relative';
+                    activeElement.style.removeProperty('left');
+                    activeElement.style.removeProperty('top');
+                }
+            }
             setActiveElement(null);
         }
     }

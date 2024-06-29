@@ -16,7 +16,7 @@ export default class Refree {
 
     tileIsOccupiedByOpponent(x: number, y: number, team: TeamType, boardState: Piece[]): boolean {
         const piece = boardState.find(p => p.x == x && p.y == y && p.team != team);
-        if (piece && piece.team != team) {
+        if (piece) {
             return true;
         } else {
             return false;
@@ -40,7 +40,8 @@ export default class Refree {
                 if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y - pawnDir, boardState)) {
                     return true;
                 }
-            } else if (px === x && y - py === pawnDir) {
+            }
+            else if (px === x && y - py === pawnDir) {
                 if (!this.tileIsOccupied(x, y, boardState)) {
                     return true;
                 }
@@ -48,12 +49,21 @@ export default class Refree {
             //capture logic
             else if (x - px === -1 && y - py === pawnDir) {
                 if (this.tileIsOccupiedByOpponent(x, y, team, boardState)) {
+                    console.log("capture upper left");
                     return true;
                 }
-            } else if (x - px === 1 && y - py === pawnDir) {
+            }
+            else if (x - px === 1 && y - py === pawnDir) {
                 if (this.tileIsOccupiedByOpponent(x, y, team, boardState)) {
+                    console.log("capture upper right");
                     return true;
                 }
+            }
+
+            else if(x - px === -1 && y - py === pawnDir){
+            }
+            else if(x - px === -1 && y - py === pawnDir){
+
             }
         }
         return false;
