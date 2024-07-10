@@ -15,6 +15,7 @@ export interface Piece {
     y: number;
     type: PieceType;
     team: TeamType;
+    enPassant?: boolean;
 }
 
 export enum PieceType {
@@ -136,22 +137,54 @@ const Chessboard = () => {
 
             if (currPiece) {
                 const validMove = refree.isValidMove(gridX, gridY, x, y, currPiece.type, currPiece.team, pieces);
-                if (validMove) {
+
+                const isEnpassant = refree.isEnPassantMove(gridX, gridY, x, y, pieces, currPiece.type, currPiece.team);
+                const pawnDir = (currPiece.team == TeamType.PLAYER) ? -1 : 1;
+                
+                if (isEnpassant) {
                     const updatedPieces = pieces.reduce((result, piece) => {
-                        if (piece.x === currPiece.x && piece.y === currPiece.y) {
+                        if (piece.x === gridX && piece.y === gridY) {
+                            piece.enPassant = false;
                             piece.x = x;
                             piece.y = y;
                             result.push(piece);
                         }
-                        else if (!(piece.x == x && piece.y == y)) {
+                        else if (!(piece.x == x && piece.y == -pawnDir)) {
+                            if (piece.type === PieceType.PAWN) {
+                                piece.enPassant = false;
+                            }
                             result.push(piece);
                         }
                         return result;
                     }, [] as Piece[]);
 
                     setPieces(updatedPieces);
+                }
+                else if (validMove) {
+                    const updatedPieces = pieces.reduce((result, piece) => {
+                        if (piece.x === gridX && piece.y === gridY) {
+                            if (Math.abs(gridY - y) === 2 && piece.type === PieceType.PAWN) {
+                                console.log('en passant');
+                                piece.enPassant = true;
+                            }
+                            else {
+                                piece.enPassant = false;
+                            }
 
-                    
+                            piece.x = x;
+                            piece.y = y;
+                            result.push(piece);
+                        }
+                        else if (!(piece.x == x && piece.y == y)) {
+                            if (piece.type === PieceType.PAWN) {
+                                piece.enPassant = false;
+                            }
+                            result.push(piece);
+                        }
+                        return result;
+                    }, [] as Piece[]);
+
+                    setPieces(updatedPieces);
                 }
                 else {
                     activeElement.style.position = 'relative';

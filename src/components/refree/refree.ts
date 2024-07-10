@@ -23,6 +23,29 @@ export default class Refree {
         }
     }
 
+    isEnPassantMove(
+        px: number,
+        py: number,
+        x: number,
+        y: number,
+        boardState: Piece[],
+        type: PieceType,
+        team: TeamType,
+        )
+        : boolean {
+        const pawnDir = (team == TeamType.PLAYER) ? -1 : 1;
+
+        if (type === PieceType.PAWN) {
+            if ((x - px === -1 || x - px === 1) && y - py === pawnDir) {
+                const piece = boardState.find(p => p.x == x && p.y == y - pawnDir && p.enPassant);
+                if (piece) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     isValidMove(
         px: number,
         py: number,
@@ -60,11 +83,6 @@ export default class Refree {
                 }
             }
 
-            else if(x - px === -1 && y - py === pawnDir){
-            }
-            else if(x - px === -1 && y - py === pawnDir){
-
-            }
         }
         return false;
 
