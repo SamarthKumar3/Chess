@@ -31,19 +31,19 @@ export default class Refree {
         boardState: Piece[],
         type: PieceType,
         team: TeamType,
-        )
-        : boolean {
-        const pawnDir = (team == TeamType.PLAYER) ? -1 : 1;
+    ) {
+        const pawnDir = (team == TeamType.PLAYER) ? 1 : -1;
 
         if (type === PieceType.PAWN) {
             if ((x - px === -1 || x - px === 1) && y - py === pawnDir) {
-                const piece = boardState.find(p => p.x == x && p.y == y - pawnDir && p.enPassant);
+                const piece = boardState.find(p => p.x === x && p.y === y - pawnDir && p.enPassant);
+                //piece value is undefined
                 if (piece) {
                     return true;
                 }
             }
         }
-        return false;
+        // return false;
     }
 
     isValidMove(
@@ -56,8 +56,8 @@ export default class Refree {
         boardState: Piece[]
     ): boolean {
         if (type == PieceType.PAWN) {
-            const splRow = (team == TeamType.PLAYER) ? 6 : 1;
-            const pawnDir = (team == TeamType.PLAYER) ? -1 : 1;
+            const splRow = (team == TeamType.PLAYER) ? 1 : 6;
+            const pawnDir = (team == TeamType.PLAYER) ? 1 : -1;
             //movement logic
             if (px === x && py === splRow && y - py === 2 * pawnDir) {
                 if (!this.tileIsOccupied(x, y, boardState) && !this.tileIsOccupied(x, y - pawnDir, boardState)) {

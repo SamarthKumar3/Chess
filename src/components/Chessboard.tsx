@@ -7,7 +7,6 @@ import Refree from './refree/refree';
 
 const verticalAxis = ['1', '2', '3', '4', '5', '6', '7', '8'];
 const horizontalAxis = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-const reverseVerticalAxis = verticalAxis.reverse();
 
 export interface Piece {
     image: string;
@@ -35,35 +34,35 @@ export enum TeamType {
 const initialBoardState: Piece[] = [];
 
 initialBoardState.push(
-    { image: '/assets/images/White_Rook.png', x: 0, y: 0, type: PieceType.ROOK, team: TeamType.OPPONENT },
-    { image: '/assets/images/White_Knight.png', x: 1, y: 0, type: PieceType.KNIGHT, team: TeamType.OPPONENT },
-    { image: '/assets/images/White_Bishop.png', x: 2, y: 0, type: PieceType.BISHOP, team: TeamType.OPPONENT },
+    { image: '/assets/images/White_Rook.png', x: 0, y: 0, type: PieceType.ROOK, team: TeamType.PLAYER },
+    { image: '/assets/images/White_Knight.png', x: 1, y: 0, type: PieceType.KNIGHT, team: TeamType.PLAYER },
+    { image: '/assets/images/White_Bishop.png', x: 2, y: 0, type: PieceType.BISHOP, team: TeamType.PLAYER },
 
-    { image: '/assets/images/White_Queen.png', x: 3, y: 0, type: PieceType.QUEEN, team: TeamType.OPPONENT },
-    { image: '/assets/images/White_King.png', x: 4, y: 0, type: PieceType.KING, team: TeamType.OPPONENT },
-    { image: '/assets/images/White_Bishop.png', x: 5, y: 0, type: PieceType.BISHOP, team: TeamType.OPPONENT },
-    { image: '/assets/images/White_Knight.png', x: 6, y: 0, type: PieceType.KNIGHT, team: TeamType.OPPONENT },
-    { image: '/assets/images/White_Rook.png', x: 7, y: 0, type: PieceType.ROOK, team: TeamType.OPPONENT },
+    { image: '/assets/images/White_Queen.png', x: 3, y: 0, type: PieceType.QUEEN, team: TeamType.PLAYER },
+    { image: '/assets/images/White_King.png', x: 4, y: 0, type: PieceType.KING, team: TeamType.PLAYER },
+    { image: '/assets/images/White_Bishop.png', x: 5, y: 0, type: PieceType.BISHOP, team: TeamType.PLAYER },
+    { image: '/assets/images/White_Knight.png', x: 6, y: 0, type: PieceType.KNIGHT, team: TeamType.PLAYER },
+    { image: '/assets/images/White_Rook.png', x: 7, y: 0, type: PieceType.ROOK, team: TeamType.PLAYER },
 
 );
 
 for (let i = 0; i < 8; i++) {
-    initialBoardState.push({ image: '/assets/images/White_Pawn.png', x: i, y: 1, type: PieceType.PAWN, team: TeamType.OPPONENT });
+    initialBoardState.push({ image: '/assets/images/White_Pawn.png', x: i, y: 1, type: PieceType.PAWN, team: TeamType.PLAYER });
 }
 
 initialBoardState.push(
-    { image: '/assets/images/Black_Rook.png', x: 0, y: 7, type: PieceType.ROOK, team: TeamType.PLAYER },
-    { image: '/assets/images/Black_Knight.png', x: 1, y: 7, type: PieceType.KNIGHT, team: TeamType.PLAYER },
-    { image: '/assets/images/Black_Bishop.png', x: 2, y: 7, type: PieceType.BISHOP, team: TeamType.PLAYER },
-    { image: '/assets/images/Black_Queen.png', x: 3, y: 7, type: PieceType.QUEEN, team: TeamType.PLAYER },
-    { image: '/assets/images/Black_King.png', x: 4, y: 7, type: PieceType.KING, team: TeamType.PLAYER },
-    { image: '/assets/images/Black_Bishop.png', x: 5, y: 7, type: PieceType.BISHOP, team: TeamType.PLAYER },
-    { image: '/assets/images/Black_Knight.png', x: 6, y: 7, type: PieceType.KNIGHT, team: TeamType.PLAYER },
-    { image: '/assets/images/Black_Rook.png', x: 7, y: 7, type: PieceType.ROOK, team: TeamType.PLAYER },
+    { image: '/assets/images/Black_Rook.png', x: 0, y: 7, type: PieceType.ROOK, team: TeamType.OPPONENT },
+    { image: '/assets/images/Black_Knight.png', x: 1, y: 7, type: PieceType.KNIGHT, team: TeamType.OPPONENT },
+    { image: '/assets/images/Black_Bishop.png', x: 2, y: 7, type: PieceType.BISHOP, team: TeamType.OPPONENT },
+    { image: '/assets/images/Black_Queen.png', x: 3, y: 7, type: PieceType.QUEEN, team: TeamType.OPPONENT },
+    { image: '/assets/images/Black_King.png', x: 4, y: 7, type: PieceType.KING, team: TeamType.OPPONENT },
+    { image: '/assets/images/Black_Bishop.png', x: 5, y: 7, type: PieceType.BISHOP, team: TeamType.OPPONENT },
+    { image: '/assets/images/Black_Knight.png', x: 6, y: 7, type: PieceType.KNIGHT, team: TeamType.OPPONENT },
+    { image: '/assets/images/Black_Rook.png', x: 7, y: 7, type: PieceType.ROOK, team: TeamType.OPPONENT },
 );
 
 for (let i = 0; i < 8; i++) {
-    initialBoardState.push({ image: '/assets/images/Black_Pawn.png', x: i, y: 6, type: PieceType.PAWN, team: TeamType.PLAYER });
+    initialBoardState.push({ image: '/assets/images/Black_Pawn.png', x: i, y: 6, type: PieceType.PAWN, team: TeamType.OPPONENT });
 }
 
 const Chessboard = () => {
@@ -139,8 +138,9 @@ const Chessboard = () => {
                 const validMove = refree.isValidMove(gridX, gridY, x, y, currPiece.type, currPiece.team, pieces);
 
                 const isEnpassant = refree.isEnPassantMove(gridX, gridY, x, y, pieces, currPiece.type, currPiece.team);
-                const pawnDir = (currPiece.team == TeamType.PLAYER) ? -1 : 1;
-                
+                //isEnpassant is always undefined
+                const pawnDir = (currPiece.team == TeamType.PLAYER) ? 1 : -1;
+
                 if (isEnpassant) {
                     const updatedPieces = pieces.reduce((result, piece) => {
                         if (piece.x === gridX && piece.y === gridY) {
@@ -149,7 +149,7 @@ const Chessboard = () => {
                             piece.y = y;
                             result.push(piece);
                         }
-                        else if (!(piece.x == x && piece.y == -pawnDir)) {
+                        else if (!(piece.x == x && piece.y == pawnDir)) {
                             if (piece.type === PieceType.PAWN) {
                                 piece.enPassant = false;
                             }
@@ -157,14 +157,12 @@ const Chessboard = () => {
                         }
                         return result;
                     }, [] as Piece[]);
-
                     setPieces(updatedPieces);
                 }
                 else if (validMove) {
                     const updatedPieces = pieces.reduce((result, piece) => {
                         if (piece.x === gridX && piece.y === gridY) {
-                            if (Math.abs(gridY - y) === 2 && piece.type === PieceType.PAWN) {
-                                console.log('en passant');
+                            if (Math.abs(y - gridY) === 2 && piece.type === PieceType.PAWN) {
                                 piece.enPassant = true;
                             }
                             else {
@@ -175,7 +173,7 @@ const Chessboard = () => {
                             piece.y = y;
                             result.push(piece);
                         }
-                        else if (!(piece.x == x && piece.y == y)) {
+                        else if (!(piece.x === x && piece.y === y)) {
                             if (piece.type === PieceType.PAWN) {
                                 piece.enPassant = false;
                             }
@@ -196,21 +194,46 @@ const Chessboard = () => {
         }
     }
 
-    return (
-        <>
-            <div className='chessboard' onMouseDown={(e) => grabPiece(e)} onMouseMove={(e) => movePiece(e)} onMouseUp={(e) => dropPiece(e)} ref={chessBoardRef}>
+    let board = [];
+
+    for (let j = verticalAxis.length - 1; j >= 0; j--) {
+        for (let i = 0; i < horizontalAxis.length; i++) {
+            const number = j + i + 2;
+            const piece = pieces.find(p => p.x === i && p.y === j);
+
+            let image = piece ? piece.image : '';
+            board.push(<Tile key={`${j},${i}`} image={image} number={number} />);
+        }
+    }
+
+    {/* <div className='chessboard' onMouseDown={(e) => grabPiece(e)} onMouseMove={(e) => movePiece(e)} onMouseUp={(e) => dropPiece(e)} ref={chessBoardRef}>
                 {reverseVerticalAxis.map((v, i) => {
                     return (
                         <div key={i} className='chessboard-row'>
                             {horizontalAxis.map((h, j) => {
                                 const piece = pieces.find(p => p.x === j && p.y === i);
                                 return (
-                                    <Tile key={j} number={i + j} image={piece?.image || ''} />
+                                    <>
+                                        <Tile key={j} number={i + j} image={piece?.image || ''}><p>{v}{h}</p></Tile>
+                                    </>
                                 )
                             })}
                         </div>
                     )
                 })}
+            </div> */}
+
+
+    return (
+        <>
+            <div
+                onMouseMove={(e) => movePiece(e)}
+                onMouseDown={(e) => grabPiece(e)}
+                onMouseUp={(e) => dropPiece(e)}
+                id="chessboard"
+                ref={chessBoardRef}
+            >
+                {board}
             </div>
         </>
     )

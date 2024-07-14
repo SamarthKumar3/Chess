@@ -1,4 +1,4 @@
-.chessboard{
+/* .chessboard{
     background-color: #779556;
     width: 640px;
     height: 640px;
@@ -7,8 +7,17 @@
 
 .chessboard-row{
     display: flex;
-}
+} */
 
+
+#chessboard {
+    display: grid;
+    grid-template-columns: repeat(8, 80px);
+    grid-template-rows: repeat(8, 80px);
+    width: 640px;
+    height: 640px;
+    background-color: #779556;
+}
 
 
 
